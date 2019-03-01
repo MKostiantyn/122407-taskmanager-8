@@ -9,39 +9,42 @@ const FILTERS_NAME_ARRAY_MOCK = new Map([
   [`Repeating`, 0]
 ]);
 const CARD_COLORS_ARRAY_MOCK = [`black`, `yellow`, `blue`, `green`, `pink`];
+const CARD_IMAGES_ARRAY = [`img/add-photo.svg`, `img/sample-img.jpg`];
 const filtersSection = document.querySelector(`.main__filter`);
 const boardTasks = document.querySelector(`.board__tasks`);
 
-const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomDate = () => Date.now() + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000;
+
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const getCardData = () => {
   return {
-    dueDate: getRandomInt(0, 1) ? Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000 : false,
-    colorClassName: CARD_COLORS_ARRAY_MOCK[getRandomInt(0, 4)],
+    dueDate: getRandomInteger(0, 1) ? getRandomDate() : false,
+    colorClassName: CARD_COLORS_ARRAY_MOCK[getRandomInteger(0, 4)],
     text: [
       `This is example of new task, you can add picture, set date and time, add tags.`,
       `It is example of repeating task. It marks by wave.`,
       `Here is a card with filled data`,
       ``
-    ][getRandomInt(0, 3)],
-    hashTags: new Set([`repeat`, `cinema`, `entertaiment`].slice(0, getRandomInt(0, 3))),
+    ][getRandomInteger(0, 3)],
+    hashTags: new Set([`repeat`, `cinema`, `entertaiment`].slice(0, getRandomInteger(0, 3))),
     repeatDays: new Map([
-      [`mo`, Boolean(getRandomInt(0, 1))],
-      [`tu`, Boolean(getRandomInt(0, 1))],
-      [`we`, Boolean(getRandomInt(0, 1))],
-      [`th`, Boolean(getRandomInt(0, 1))],
-      [`fr`, Boolean(getRandomInt(0, 1))],
-      [`sa`, Boolean(getRandomInt(0, 1))],
-      [`su`, Boolean(getRandomInt(0, 1))]
+      [`mo`, Boolean(getRandomInteger(0, 1))],
+      [`tu`, Boolean(getRandomInteger(0, 1))],
+      [`we`, Boolean(getRandomInteger(0, 1))],
+      [`th`, Boolean(getRandomInteger(0, 1))],
+      [`fr`, Boolean(getRandomInteger(0, 1))],
+      [`sa`, Boolean(getRandomInteger(0, 1))],
+      [`su`, Boolean(getRandomInteger(0, 1))]
     ]),
     image: {
-      src: [`img/add-photo.svg`, `img/sample-img.jpg`][getRandomInt(0, 1)],
+      src: CARD_IMAGES_ARRAY[getRandomInteger(0, 1)],
       alt: `task picture`
     },
     controlButtons: new Map([
       [`Edit`, true],
-      [`Archive`, Boolean(getRandomInt(0, 1))],
-      [`Favorites`, Boolean(getRandomInt(0, 1))]
+      [`Archive`, Boolean(getRandomInteger(0, 1))],
+      [`Favorites`, Boolean(getRandomInteger(0, 1))]
     ])
   };
 };
@@ -66,9 +69,8 @@ const renderControlButtons = (objectData, filters) => {
       }
       return currentValue + templateControlButton(objectData, key);
     }, ``);
-  } else {
-    return ``;
   }
+  return ``;
 };
 
 const renderCardDeadlineDay = (milliseconds) => {
@@ -86,9 +88,8 @@ const checkIsRepeated = (repeatedDays) => {
     return Array
       .from(repeatedDays.values())
       .some((item) => item);
-  } else {
-    return false;
   }
+  return false;
 };
 
 const renderCardDays = (cardDays, cardIndex) => {
@@ -133,7 +134,7 @@ const renderCardColors = (cardColors, cardIndex, cardCurrentColor) => {
           </div>`;
 };
 
-const renderCardClasses = (data, isDueDate, filters) => {
+const getCardClasses = (data, isDueDate, filters) => {
   const isRepeated = (mapObject) => mapObject && mapObject.size && Array.from(mapObject.values()).some((element) => element);
   if (isRepeated(data.repeatDays)) {
     filters.set(`Repeating`, filters.get(`Repeating`) + 1);
@@ -154,7 +155,7 @@ const renderCard = (data, index, filters) => {
     if (isToday) {
       filters.set(`Today`, filters.get(`Today`) + 1);
     }
-    return `<article class="${renderCardClasses(data, isDueDate, filters)}">
+    return `<article class="${getCardClasses(data, isDueDate, filters)}">
               <form class="card__form" method="get">
                 <div class="card__inner">
                   <div class="card__control">${renderControlButtons(data.controlButtons, filters)}</div>
@@ -192,9 +193,8 @@ const renderCard = (data, index, filters) => {
                 </div>
               </form>
             </article>`;
-  } else {
-    return ``;
   }
+  return ``;
 };
 
 const renderCards = (quantityCards, filters) => {
@@ -209,7 +209,7 @@ const filters = filtersSection.querySelectorAll(`.filter__input`);
 if (filters.length) {
   filters.forEach((item) => {
     item.addEventListener(`change`, () => {
-      boardTasks.innerHTML = renderCards(getRandomInt(1, 6), FILTERS_NAME_ARRAY_MOCK);
+      boardTasks.innerHTML = renderCards(getRandomInteger(1, 6), FILTERS_NAME_ARRAY_MOCK);
     });
   });
 }
