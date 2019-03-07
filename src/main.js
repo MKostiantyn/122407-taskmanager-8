@@ -3,6 +3,7 @@ import renderCards from './render-cards';
 import renderFilters from './render-filters';
 import makeCardsArray from './make-cards-array';
 
+const CARDS_QUANTITY = 7;
 const FILTERS_NAME_ARRAY_MOCK = new Map([
   [`All`, 0],
   [`Overdue`, 0],
@@ -12,7 +13,7 @@ const FILTERS_NAME_ARRAY_MOCK = new Map([
   [`Tags`, 0],
   [`Repeating`, 0]
 ]);
-const cardsArray = makeCardsArray(7);
+const cardsArray = makeCardsArray(CARDS_QUANTITY);
 const filtersSection = document.querySelector(`.main__filter`);
 const boardTasks = document.querySelector(`.board__tasks`);
 
