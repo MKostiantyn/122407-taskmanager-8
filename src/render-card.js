@@ -8,36 +8,47 @@ import renderCardColors from './render-card-colors';
 
 export default (data, index) => {
   if (data && Object.keys(data).length) {
+    const cardControlButtons = renderCardControlButtons(data.controlButtons);
+    const cardText = data.text ? data.text : ``;
+    const cardDueDateStatus = data.dueDate ? `yes` : `no`;
+    const cardDueDateFieldsetStatus = !data.dueDate ? `disabled` : ``;
+    const cardDeadlineDay = data.dueDate ? renderCardDeadlineDay(data.dueDate) : ``;
+    const cardRepeatDaysStatus = data.repeatDays && isRepeated(data.repeatDays) ? `yes` : `no`;
+    const cardRepeatDaysFieldsetStatus = !data.repeatDays || !isRepeated(data.repeatDays) ? ` disabled` : ``;
+    const cardDays = data.repeatDays ? renderCardDays(data.repeatDays, index) : ``;
+    const cardHashTags = data.hashTags && data.hashTags.size ? renderCardHashTags(data.hashTags) : ``;
+    const cardImageAttributes = data.image ? `src="${data.image.src}" alt="${data.image.alt}"` : ``;
+    const cardColors = renderCardColors(data.colorClassNames, index);
     return `<article class="${getCardClasses(data)}">
               <form class="card__form" method="get">
                 <div class="card__inner">
-                  <div class="card__control">${renderCardControlButtons(data.controlButtons)}</div>
+                  <div class="card__control">${cardControlButtons}</div>
                   <div class="card__color-bar"><svg class="card__color-bar-wave" width="100%" height="10"><use xlink:href="#wave"></use></svg></div>
                   <div class="card__textarea-wrap">
                       <label>
-                          <textarea class="card__text" placeholder="Start typing your text here..." name="text">${data.text ? data.text : ``}</textarea>
+                          <textarea class="card__text" placeholder="Start typing your text here..." name="text">${cardText}</textarea>
                       </label>
                   </div>
                   <div class="card__settings">
                       <div class="card__details">
                           <div class="card__dates">
-                              <button class="card__date-deadline-toggle" type="button">date: <span class="card__date-status">${data.dueDate ? `yes` : `no`}</span></button>
-                              <fieldset class="card__date-deadline" ${!data.dueDate ? `disabled` : ``}>${data.dueDate ? renderCardDeadlineDay(data.dueDate) : ``}</fieldset>
-                              <button class="card__repeat-toggle" type="button">repeat:<span class="card__repeat-status">${data.repeatDays && isRepeated(data.repeatDays) ? `yes` : `no`}</span></button>
-                              <fieldset class="card__repeat-days"${!data.repeatDays || !isRepeated(data.repeatDays) ? ` disabled` : ``}>
-                                  <div class="card__repeat-days-inner">${data.repeatDays ? renderCardDays(data.repeatDays, index) : ``}</div>
+                              <button class="card__date-deadline-toggle" type="button">date: <span class="card__date-status">${cardDueDateStatus}</span></button>
+                              <fieldset class="card__date-deadline" ${cardDueDateFieldsetStatus}>${cardDeadlineDay}</fieldset>
+                              <button class="card__repeat-toggle" type="button">repeat:<span class="card__repeat-status">${cardRepeatDaysStatus}</span></button>
+                              <fieldset class="card__repeat-days"${cardRepeatDaysFieldsetStatus}>
+                                  <div class="card__repeat-days-inner">${cardDays}</div>
                               </fieldset>
                           </div>
                           <div class="card__hashtag">
-                              <div class="card__hashtag-list">${data.hashTags && data.hashTags.size ? renderCardHashTags(data.hashTags) : ``}</div>
+                              <div class="card__hashtag-list">${cardHashTags}</div>
                               <label><input type="text" class="card__hashtag-input" name="hashtag-input" placeholder="Type new hashtag here"></label>
                           </div>
                       </div>
                       <label class="card__img-wrap">
                           <input type="file" class="card__img-input visually-hidden" name="img">
-                          <img ${data.image ? `src="${data.image.src}" alt="${data.image.alt}"` : ``} class="card__img">
+                          <img ${cardImageAttributes} class="card__img">
                       </label>
-                      ${renderCardColors(data.colorClassNames, index)}
+                      ${cardColors}
                   </div>
                   <div class="card__status-btns">
                       <button class="card__save" type="submit">save</button>

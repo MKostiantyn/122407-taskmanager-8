@@ -3,7 +3,8 @@ import isDueDate from './check-card-due-date';
 
 export default (filtersData, cardsArray) => {
   if (filtersData && filtersData.size && cardsArray && cardsArray.length) {
-    cardsArray.forEach((item, index, array) => {
+
+    cardsArray.reduce((currentValue, item, index, array) => {
       if (!index) {
         filtersData.set(`All`, array.length);
       }
@@ -18,11 +19,9 @@ export default (filtersData, cardsArray) => {
         } else {
           filtersData.set(`Today`, filtersData.get(`Today`) + 1);
         }
-      } else {
-        if (!isDueDate(item.dueDate)
-          && new Date(item.dueDate).getDay() === new Date().getDay()) {
-          filtersData.set(`Today`, filtersData.get(`Today`) + 1);
-        }
+      } else if (!isDueDate(item.dueDate)
+        && new Date(item.dueDate).getDay() === new Date().getDay()) {
+        filtersData.set(`Today`, filtersData.get(`Today`) + 1);
       }
       if (item.controlButtons) {
         if (item.controlButtons.get(`Favorites`)) {
@@ -38,7 +37,7 @@ export default (filtersData, cardsArray) => {
       if (isRepeated(item.repeatDays)) {
         filtersData.set(`Repeating`, filtersData.get(`Repeating`) + 1);
       }
-    });
+    }, {});
   }
   return filtersData;
 };
