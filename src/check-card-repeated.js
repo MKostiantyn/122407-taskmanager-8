@@ -1,1 +1,1 @@
-export default (arrayDays) => arrayDays.length && arrayDays.some((element) => element);
+export default (objectDays = {}) => objectDays && Object.values(objectDays).some((element) => element);

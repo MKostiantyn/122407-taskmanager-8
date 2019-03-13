@@ -8,8 +8,8 @@ import renderCardColors from './render-card-colors';
 
 export default (data, index) => {
   if (data && Object.keys(data).length) {
-    const cardControlButtons = renderCardControlButtons(data.controlButtons);
-    const cardText = data.text ? data.text : ``;
+    const cardControlButtons = renderCardControlButtons(data);
+    const cardText = data.title ? data.title : ``;
     const cardDueDateStatus = data.dueDate ? `yes` : `no`;
     const cardDueDateFieldsetStatus = !data.dueDate ? `disabled` : ``;
     const cardDeadlineDay = data.dueDate ? renderCardDeadlineDay(data.dueDate) : ``;
@@ -17,12 +17,12 @@ export default (data, index) => {
     const cardRepeatDaysFieldsetStatus = !data.repeatDays || !isRepeated(data.repeatDays) ? ` disabled` : ``;
     const cardDays = data.repeatDays ? renderCardDays(data.repeatDays, index) : ``;
     const cardHashTags = data.hashTags && data.hashTags.size ? renderCardHashTags(data.hashTags) : ``;
-    const cardImageAttributes = data.image ? `src="${data.image.src}" alt="${data.image.alt}"` : ``;
+    const cardImageAttributes = data.picture ? `src="${data.picture}"` : ``;
     const cardColors = renderCardColors(data.colorClassNames, index);
     return `<article class="${getCardClasses(data)}">
               <form class="card__form" method="get">
                 <div class="card__inner">
-                  <div class="card__control">${cardControlButtons}</div>
+                  ${cardControlButtons}
                   <div class="card__color-bar"><svg class="card__color-bar-wave" width="100%" height="10"><use xlink:href="#wave"></use></svg></div>
                   <div class="card__textarea-wrap">
                       <label>
@@ -46,7 +46,7 @@ export default (data, index) => {
                       </div>
                       <label class="card__img-wrap">
                           <input type="file" class="card__img-input visually-hidden" name="img">
-                          <img ${cardImageAttributes} class="card__img">
+                          <img ${cardImageAttributes} alt="Picture Alt" class="card__img">
                       </label>
                       ${cardColors}
                   </div>
