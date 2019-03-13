@@ -1,37 +1,29 @@
 import getRandomDate from './helpers/get-random-date';
 import getRandomInteger from './helpers/get-random-integer';
-import getCardColorClassNames from './get-card-color-class-names';
-
-const CARD_IMAGES_ARRAY_MOCK = [`img/add-photo.svg`, `img/sample-img.jpg`];
+import getRandomElementsArray from './helpers/get-random-elements-array';
+import chooseActiveColorClassName from './choose-active-color-class-name';
 
 export default () => {
   return {
-    dueDate: getRandomInteger(0, 1) ? getRandomDate() : false,
-    colorClassNames: getCardColorClassNames(),
-    text: [
-      `This is example of new task, you can add picture, set date and time, add tags.`,
-      `It is example of repeating task. It marks by wave.`,
-      `Here is a card with filled data`,
-      ``
+    title: [
+      `Learn theory`,
+      `Do homework`,
+      `Pass intensive on a hundred`
     ][getRandomInteger(0, 3)],
-    hashTags: new Set([`repeat`, `cinema`, `entertaiment`].slice(0, getRandomInteger(0, 3))),
-    repeatDays: [
-      Boolean(getRandomInteger(0, 1)),
-      Boolean(getRandomInteger(0, 1)),
-      Boolean(getRandomInteger(0, 1)),
-      Boolean(getRandomInteger(0, 1)),
-      Boolean(getRandomInteger(0, 1)),
-      Boolean(getRandomInteger(0, 1)),
-      Boolean(getRandomInteger(0, 1))
-    ],
-    image: {
-      src: CARD_IMAGES_ARRAY_MOCK[getRandomInteger(0, 1)],
-      alt: `task picture`
+    dueDate: getRandomInteger(0, 1) ? getRandomDate() : false,
+    hashTags: new Set(getRandomElementsArray([`homework`, `theory`, `practice`, `intensive`, `keks`, `shopping`, `documents`, `tutorials`, `codewars`], 0, 3)),
+    colorClassNames: chooseActiveColorClassName([`black`, `yellow`, `blue`, `green`, `pink`]),
+    repeatDays: {
+      'Mo': Math.random() > 0.5,
+      'Tu': Math.random() > 0.5,
+      'We': Math.random() > 0.5,
+      'Th': Math.random() > 0.5,
+      'Fr': Math.random() > 0.5,
+      'Sa': Math.random() > 0.5,
+      'Su': Math.random() > 0.5
     },
-    controlButtons: new Map([
-      [`Edit`, true],
-      [`Archive`, Boolean(getRandomInteger(0, 1))],
-      [`Favorites`, Boolean(getRandomInteger(0, 1))]
-    ])
+    picture: `http://picsum.photos/100/100?r=${Math.random()}`,
+    isFavorite: Math.random() > 0.5,
+    isDone: Math.random() > 0.5
   };
 };

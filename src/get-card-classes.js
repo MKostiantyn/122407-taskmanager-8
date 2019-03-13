@@ -4,5 +4,8 @@ import getCardChosenClassName from './get-card-chosen-class-name';
 
 export default (data) => {
   const cardChosenColorClassName = getCardChosenClassName(data.colorClassNames);
-  return `card${cardChosenColorClassName ? ` card--${cardChosenColorClassName}` : ``}${isRepeated(data.repeatDays) ? ` card--repeat` : ``}${isDueDate(data.dueDate) ? ` card--deadline` : ``}`;
+  const colorClass = cardChosenColorClassName ? ` card--${cardChosenColorClassName}` : ``;
+  const repeatedClass = isRepeated(data.repeatDays) ? ` card--repeat` : ``;
+  const dueDateClass = isDueDate(data.dueDate) ? ` card--deadline` : ``;
+  return `card${colorClass}${repeatedClass}${dueDateClass}`;
 };
