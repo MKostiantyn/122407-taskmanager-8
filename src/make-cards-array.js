@@ -1,2 +1,2 @@
-import getCardData from './get-card-data.js';
+import getCardData from './get-card-data';
 export default (quantityCards) => [...new Array(quantityCards)].map(() => getCardData());
