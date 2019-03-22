@@ -1,7 +1,7 @@
-import isRepeated from './check-card-repeated';
-import isOverDueDate from './check-card-overdue-date';
+import {isRepeated} from './check-task-repeated';
+import {isOverDueDate} from './check-task-overdue-date';
 
-export default (dueDate, repeatDays) => {
+export const isDoDateToday = (dueDate, repeatDays) => {
   const isNotExistDueDateAndRepeatDays = !dueDate && !isRepeated(repeatDays);
   const isNotOverDueDate = !isOverDueDate(dueDate);
   const todayDayIndex = new Date().getDay();

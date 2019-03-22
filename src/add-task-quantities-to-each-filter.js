@@ -1,18 +1,18 @@
-import isRepeated from './check-card-repeated';
-import isOverDueDate from './check-card-overdue-date';
-import isDoDateToday from './check-card-do-date-today';
+import {isRepeated} from './check-task-repeated';
+import {isOverDueDate} from './check-task-overdue-date';
+import {isDoDateToday} from './check-task-do-date-today';
 
-export default (filtersData, cardsArray) => {
-  if (filtersData && filtersData.size && cardsArray && cardsArray.length) {
+export const addTaskQuantitiesToEachFilter = (filtersData, tasks = []) => {
+  if (filtersData && filtersData.size && Array.isArray(tasks)) {
 
-    cardsArray.reduce((currentValue, item, index, array) => {
+    tasks.reduce((currentValue, item, index, array) => {
       if (!index) {
         filtersData.set(`All`, array.length);
       }
       if (isOverDueDate(item.dueDate)) {
         filtersData.set(`Overdue`, filtersData.get(`Overdue`) + 1);
       }
-      if (isDoDateToday(item.dueDate, item.repeatDays)) {
+      if (isDoDateToday(item.dueDate, item.repeatingDays)) {
         filtersData.set(`Today`, filtersData.get(`Today`) + 1);
       }
       if (item.isDone) {
@@ -24,7 +24,7 @@ export default (filtersData, cardsArray) => {
       if (item.hashTags && item.hashTags.size) {
         filtersData.set(`Tags`, filtersData.get(`Tags`) + 1);
       }
-      if (isRepeated(item.repeatDays)) {
+      if (isRepeated(item.repeatingDays)) {
         filtersData.set(`Repeating`, filtersData.get(`Repeating`) + 1);
       }
     }, {});
